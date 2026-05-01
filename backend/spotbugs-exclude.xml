@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FindBugsFilter>
+    <!-- Exclude intentional bugs in FlightService for demo purposes -->
+    <Match>
+        <Class name="com.hackathon.service.FlightService" />
+        <Bug pattern="NP_NULL_ON_SOME_PATH" />
+    </Match>
+    
+    <Match>
+        <Class name="com.hackathon.service.FlightService" />
+        <Bug pattern="RV_RETURN_VALUE_IGNORED" />
+    </Match>
+    
+    <Match>
+        <Class name="com.hackathon.service.FlightService" />
+        <Method name="getFlights" />
+        <Bug pattern="BC_IMPOSSIBLE_CAST" />
+    </Match>
+    
+    <Match>
+        <Class name="com.hackathon.service.FlightService" />
+        <Method name="getDelayedPercentage" />
+        <Bug pattern="ICAST_IDIV_CAST_TO_DOUBLE" />
+    </Match>
+    
+    <!-- Exclude test classes from certain checks -->
+    <Match>
+        <Class name="~.*Test$" />
+        <Bug pattern="UWF_FIELD_NOT_INITIALIZED_IN_CONSTRUCTOR" />
+    </Match>
+    
+    <!-- Exclude DTOs from serialization warnings -->
+    <Match>
+        <Class name="~.*DTO$" />
+        <Bug pattern="SE_NO_SERIALVERSIONID" />
+    </Match>
+    
+    <!-- Exclude entities from serialization warnings -->
+    <Match>
+        <Class name="com.hackathon.entity.*" />
+        <Bug pattern="SE_NO_SERIALVERSIONID" />
+    </Match>
+    
+    <!-- Exclude models from serialization warnings -->
+    <Match>
+        <Class name="com.hackathon.model.*" />
+        <Bug pattern="SE_NO_SERIALVERSIONID" />
+    </Match>
+    
+    <!-- Exclude generated code -->
+    <Match>
+        <Class name="~.*\$.*" />
+    </Match>
+    
+    <!-- Exclude Spring Boot auto-configuration -->
+    <Match>
+        <Class name="com.hackathon.MainApplication" />
+        <Bug pattern="UWF_UNWRITTEN_FIELD" />
+    </Match>
+    
+    <!-- Exclude false positives in exception handler -->
+    <Match>
+        <Class name="com.hackathon.exception.GlobalExceptionHandler" />
+        <Bug pattern="REC_CATCH_EXCEPTION" />
+    </Match>
+    
+    <!-- Exclude async method warnings -->
+    <Match>
+        <Method name="~.*Async$" />
+        <Bug pattern="RV_RETURN_VALUE_IGNORED_NO_SIDE_EFFECT" />
+    </Match>
+    
+    <!-- Exclude scheduled method warnings -->
+    <Match>
+        <Class name="com.hackathon.service.LogFileWatcher" />
+        <Method name="watchLogFile" />
+        <Bug pattern="RV_RETURN_VALUE_IGNORED" />
+    </Match>
+</FindBugsFilter>
+
+<!-- Made with Bob -->
