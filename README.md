@@ -29,7 +29,7 @@ This project demonstrates IBM Bob's capability to automatically detect productio
          │ REST API
          ▼
 ┌─────────────────┐
-│  Spring Boot    │  (Java 25)
+│  Spring Boot    │  (Java 21)
 │   Backend       │
 │   (Port 8080)   │
 └────────┬────────┘
@@ -80,12 +80,19 @@ cd ../frontend
 npm install
 ```
 
-5. **Install Playwright**
+5. **Install Playwright** (Optional - for E2E testing)
 ```bash
 cd ..
 npm install
+
+# Windows: Run the setup script
+.\install-playwright.ps1
+
+# Or manually install browsers
 npx playwright install
 ```
+
+**Note:** If you encounter PowerShell execution policy errors, see [`PLAYWRIGHT_SETUP.md`](PLAYWRIGHT_SETUP.md) for detailed setup instructions. Playwright is optional - the core auto-fix workflow works without it.
 
 ### Running the Application
 

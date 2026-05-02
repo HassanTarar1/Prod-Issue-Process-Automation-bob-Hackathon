@@ -1,13 +1,23 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, HostListener } from '@angular/core';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { FlightService, Flight } from './services/flight.service';
 import { AutoFixService, AutoFixRequest, AutoFixResponse } from './services/auto-fix.service';
+import { BobActionLogService } from './services/bob-action-log.service';
+import { trigger, state, style, transition, animate } from '@angular/animations';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss']
+  styleUrls: ['./app.component.scss'],
+  animations: [
+    trigger('fadeInUp', [
+      transition(':enter', [
+        style({ opacity: 0, transform: 'translateY(20px)' }),
+        animate('500ms ease-out', style({ opacity: 1, transform: 'translateY(0)' }))
+      ])
+    ])
+  ]
 })
 export class AppComponent implements OnInit {
   title = 'IBM Bob - Flight Dashboard';
@@ -28,13 +38,22 @@ export class AppComponent implements OnInit {
   // System status
   systemStatus: any = null;
 
+  // Scroll to top
+  showScrollTop = false;
+
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
   constructor(
     private flightService: FlightService,
     private autoFixService: AutoFixService,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
+    private bobActionLogService: BobActionLogService
   ) {}
+
+  @HostListener('window:scroll', [])
+  onWindowScroll() {
+    this.showScrollTop = window.pageYOffset > 300;
+  }
 
   ngOnInit(): void {
     this.loadFlights();
@@ -77,17 +96,76 @@ export class AppComponent implements OnInit {
     this.isFixing = true;
     this.showAutoFixPanel = true;
     
+    // Log initial action
+    const analysisActionId = this.bobActionLogService.addAction({
+      type: 'analysis',
+      title: 'Analyzing Error',
+      description: `Analyzing error for flight ${flight.flightNumber}`,
+      status: 'in-progress'
+    });
+    
+    const startTime = Date.now();
+    
     // Simulate a log line for the flight error
     const logLine = `{"timestamp":"${new Date().toISOString()}","errorType":"NullPointerException","message":"Cannot invoke method on null airline","stackTrace":["com.hackathon.service.FlightService.getFlights(FlightService.java:45)"]}`;
     
     const request: AutoFixRequest = {
       logLine: logLine,
-      repo: 'demo/flight-dashboard',
+      repo: 'HassanTarar1/Prod-Issue-Process-Automation-bob-Hackathon',
       filePath: 'src/main/java/com/hackathon/service/FlightService.java'
     };
 
     this.autoFixService.triggerAutoFix(request).subscribe({
       next: (result) => {
+        const duration = Date.now() - startTime;
+        
+        // Update analysis action
+        this.bobActionLogService.updateAction(analysisActionId, {
+          status: 'success',
+          description: `Error analyzed: ${result.errorType}`,
+          duration
+        });
+        
+        // Log fix generation
+        if (result.fixGenerated) {
+          const fixActionId = this.bobActionLogService.addAction({
+            type: 'fix-generation',
+            title: 'Fix Generated',
+            description: 'Code fix has been generated successfully',
+            status: 'success',
+            details: { errorType: result.errorType, fixable: result.fixable }
+          });
+          
+          // Log PR creation
+          if (result.prUrl) {
+            this.bobActionLogService.addAction({
+              type: 'pr-creation',
+              title: 'Pull Request Created',
+              description: 'PR has been created on GitHub',
+              status: 'success',
+              details: { prUrl: result.prUrl }
+            });
+          }
+          
+          // Log notification
+          if (result.slackNotified) {
+            this.bobActionLogService.addAction({
+              type: 'notification',
+              title: 'Slack Notification Sent',
+              description: 'Team has been notified via Slack',
+              status: 'success'
+            });
+          }
+        } else {
+          this.bobActionLogService.addAction({
+            type: 'error',
+            title: 'Error Not Auto-Fixable',
+            description: result.message,
+            status: 'warning',
+            details: { errorType: result.errorType }
+          });
+        }
+        
         this.autoFixResult = result;
         this.isFixing = false;
         if (result.fixGenerated) {
@@ -98,6 +176,15 @@ export class AppComponent implements OnInit {
         this.loadSystemStatus(); // Refresh status
       },
       error: (error) => {
+        const duration = Date.now() - startTime;
+        
+        // Update analysis action with error
+        this.bobActionLogService.updateAction(analysisActionId, {
+          status: 'error',
+          description: `Error during analysis: ${error.message}`,
+          duration
+        });
+        
         console.error('Error triggering auto-fix:', error);
         this.showNotification('Error triggering auto-fix: ' + error.message, 'error');
         this.isFixing = false;
@@ -108,18 +195,56 @@ export class AppComponent implements OnInit {
   recordTest(): void {
     this.showNotification('Launching Playwright Codegen...', 'info');
     
+    // Log test recording action
+    const testActionId = this.bobActionLogService.addAction({
+      type: 'test-execution',
+      title: 'Recording Test',
+      description: 'Launching Playwright Codegen for test recording',
+      status: 'in-progress'
+    });
+    
+    const startTime = Date.now();
+    
     this.autoFixService.recordTest({ url: 'http://localhost:4200' }).subscribe({
       next: (result) => {
+        const duration = Date.now() - startTime;
+        
         if (result.success) {
+          this.bobActionLogService.updateAction(testActionId, {
+            status: 'success',
+            description: `Test recorded successfully: ${result.testFilePath}`,
+            duration,
+            details: { testFilePath: result.testFilePath }
+          });
           this.showNotification(`Test recorded: ${result.testFilePath}`, 'success');
         } else {
+          this.bobActionLogService.updateAction(testActionId, {
+            status: 'warning',
+            description: result.message,
+            duration
+          });
           this.showNotification(result.message, 'warning');
         }
       },
       error: (error) => {
+        const duration = Date.now() - startTime;
+        
+        this.bobActionLogService.updateAction(testActionId, {
+          status: 'error',
+          description: `Error recording test: ${error.message}`,
+          duration
+        });
+        
         console.error('Error recording test:', error);
         this.showNotification('Error recording test: ' + error.message, 'error');
       }
+    });
+  }
+
+  scrollToTop(): void {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
     });
   }
 

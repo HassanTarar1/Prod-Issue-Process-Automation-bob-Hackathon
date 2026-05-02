@@ -1,0 +1,116 @@
+<div class="side-panel-container">
+  <!-- Toggle Button -->
+  <button 
+    mat-fab 
+    color="primary" 
+    class="panel-toggle-btn"
+    (click)="togglePanel()"
+    [class.panel-open]="isOpen"
+    matTooltip="{{ isOpen ? 'Close Bob Actions' : 'Open Bob Actions' }}"
+    matTooltipPosition="right">
+    <mat-icon>{{ isOpen ? 'chevron_left' : 'smart_toy' }}</mat-icon>
+    <span class="action-badge" *ngIf="actions.length > 0 && !isOpen">{{ actions.length }}</span>
+  </button>
+
+  <!-- Side Panel -->
+  <div class="side-panel" [@slideInOut]="isOpen ? 'in' : 'out'">
+    <div class="panel-header">
+      <div class="header-content">
+        <mat-icon class="bob-icon">smart_toy</mat-icon>
+        <div class="header-text">
+          <h2>Bob Actions</h2>
+          <p>Real-time activity log</p>
+        </div>
+      </div>
+      <div class="header-actions">
+        <button 
+          mat-icon-button 
+          (click)="clearActions()" 
+          matTooltip="Clear all actions"
+          [disabled]="actions.length === 0">
+          <mat-icon>delete_sweep</mat-icon>
+        </button>
+        <button 
+          mat-icon-button 
+          (click)="togglePanel()" 
+          matTooltip="Close panel">
+          <mat-icon>close</mat-icon>
+        </button>
+      </div>
+    </div>
+
+    <div class="panel-content">
+      <!-- Empty State -->
+      <div class="empty-state" *ngIf="actions.length === 0">
+        <mat-icon>inbox</mat-icon>
+        <h3>No Actions Yet</h3>
+        <p>Bob actions will appear here when triggered</p>
+      </div>
+
+      <!-- Actions List -->
+      <div class="actions-list" *ngIf="actions.length > 0">
+        <mat-card 
+          class="action-card" 
+          *ngFor="let action of actions; trackBy: trackByActionId"
+          [@fadeIn]>
+          <div class="action-header">
+            <div class="action-type">
+              <mat-icon [class]="'type-icon ' + action.type">{{ getTypeIcon(action.type) }}</mat-icon>
+              <span class="type-label">{{ action.type | titlecase }}</span>
+            </div>
+            <mat-chip [class]="'status-chip status-' + action.status">
+              <mat-icon>{{ getStatusIcon(action.status) }}</mat-icon>
+              {{ action.status | titlecase }}
+            </mat-chip>
+          </div>
+
+          <div class="action-body">
+            <h4>{{ action.title }}</h4>
+            <p class="description">{{ action.description }}</p>
+            
+            <div class="action-meta">
+              <span class="timestamp">
+                <mat-icon>schedule</mat-icon>
+                {{ formatTimestamp(action.timestamp) }}
+              </span>
+              <span class="duration" *ngIf="action.duration">
+                <mat-icon>timer</mat-icon>
+                {{ formatDuration(action.duration) }}
+              </span>
+            </div>
+
+            <!-- Details Expansion -->
+            <mat-expansion-panel *ngIf="action.details" class="details-panel">
+              <mat-expansion-panel-header>
+                <mat-panel-title>
+                  <mat-icon>info</mat-icon>
+                  View Details
+                </mat-panel-title>
+              </mat-expansion-panel-header>
+              <div class="details-content">
+                <pre>{{ action.details | json }}</pre>
+              </div>
+            </mat-expansion-panel>
+          </div>
+
+          <!-- Progress Indicator for In-Progress Actions -->
+          <mat-progress-bar 
+            *ngIf="action.status === 'in-progress'" 
+            mode="indeterminate" 
+            color="primary">
+          </mat-progress-bar>
+        </mat-card>
+      </div>
+    </div>
+  </div>
+
+  <!-- Overlay -->
+  <div 
+    class="panel-overlay" 
+    *ngIf="isOpen" 
+    (click)="togglePanel()"
+    [@fadeIn]>
+  </div>
+</div>
+
+<!-- Made with Bob -->

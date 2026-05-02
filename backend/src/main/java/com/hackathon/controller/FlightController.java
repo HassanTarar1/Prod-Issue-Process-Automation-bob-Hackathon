@@ -95,6 +95,27 @@ public class FlightController {
         
         return ResponseEntity.ok(flightDTOs);
     }
+    
+    /**
+     * Trigger NullPointerException bug
+     * @param flightId ID of the flight to process
+     * @return Error response
+     */
+    @GetMapping("/flights/{flightId}/airline-uppercase")
+    public ResponseEntity<Map<String, String>> getAirlineUpperCase(@PathVariable Long flightId) {
+        log.info("Getting airline uppercase for flight: {}", flightId);
+        
+        List<Flight> allFlights = flightService.getAllFlights();
+        Flight flight = allFlights.stream()
+                .filter(f -> f.getId().equals(flightId))
+                .findFirst()
+                .orElseThrow(() -> new IllegalArgumentException("Flight not found"));
+        
+        // This will trigger NullPointerException if airline is null
+        String airlineUpper = flightService.getAirlineUpperCase(flight);
+        
+        return ResponseEntity.ok(Map.of("airline", airlineUpper));
+    }
 }
 
 // Made with Bob

@@ -33,17 +33,16 @@ public class LogAnalyzerService {
      */
     public AnalysisResult analyzeLogLine(String logLine) {
         if (logLine == null || logLine.trim().isEmpty()) {
-            return new AnalysisResult(
-                false,
-                "Unknown",
-                "Manual review required",
-                "Code location not identified",
-                logLine
-            );
+            return null;
         }
 
         // Extract error type from JSON
         String errorType = extractErrorType(logLine);
+        
+        // Return null for non-error lines (lines without errorType in JSON)
+        if ("Unknown".equals(errorType)) {
+            return null;
+        }
         
         // Extract code snippet from stack trace
         String codeSnippet = extractCodeSnippet(logLine);

@@ -2,11 +2,34 @@
   position: sticky;
   top: 0;
   z-index: 1000;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  backdrop-filter: blur(10px);
+  transition: all 0.3s ease;
+
+  &:hover {
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+  }
 }
 
 .toolbar-icon {
   margin-right: 16px;
+  animation: rotate 20s linear infinite;
+}
+
+@keyframes rotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.toolbar-title {
+  font-size: 20px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
 }
 
 .spacer {
@@ -21,7 +44,15 @@
     gap: 8px;
   }
   
-  mat-chip {
+  .status-chip {
+    transition: all 0.3s ease;
+    cursor: pointer;
+    
+    &:hover {
+      transform: translateY(-2px) scale(1.05);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+    
     mat-icon {
       font-size: 18px;
       height: 18px;
@@ -31,26 +62,93 @@
   }
 }
 
+.toolbar-action {
+  transition: all 0.3s ease;
+  
+  &:hover {
+    transform: scale(1.1);
+    background-color: rgba(255, 255, 255, 0.1);
+  }
+}
+
 .container {
   max-width: 1400px;
   margin: 0 auto;
   padding: 24px;
+  animation: fadeIn 0.6s ease-out;
 }
 
 .header-card {
   margin-bottom: 24px;
+  background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+  transition: all 0.3s ease;
+  
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.18);
+  }
   
   mat-card-header {
-    mat-card-title {
+    padding: 24px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+    
+    .header-icon-wrapper {
       display: flex;
       align-items: center;
-      gap: 8px;
-      font-size: 24px;
+      justify-content: center;
+      width: 64px;
+      height: 64px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      border-radius: 16px;
+      box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+      
+      .header-icon {
+        font-size: 32px;
+        width: 32px;
+        height: 32px;
+        color: white;
+      }
+    }
+    
+    .header-content {
+      flex: 1;
+      
+      mat-card-title {
+        font-size: 28px;
+        font-weight: 700;
+        margin: 0;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+      
+      mat-card-subtitle {
+        font-size: 14px;
+        margin-top: 4px;
+        color: #666;
+      }
     }
   }
 }
 
 .table-card {
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+  background: white;
+  transition: all 0.3s ease;
+  
+  &:hover {
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.18);
+  }
+  
   mat-card-content {
     padding: 0;
   }
@@ -59,6 +157,7 @@
 .table-container {
   min-height: 400px;
   position: relative;
+  overflow: hidden;
 }
 
 .loading-spinner {
@@ -67,26 +166,55 @@
   align-items: center;
   justify-content: center;
   height: 400px;
+  animation: fadeIn 0.5s ease-out;
+  
+  mat-spinner {
+    margin-bottom: 16px;
+  }
   
   p {
     margin-top: 16px;
-    color: rgba(0,0,0,0.6);
+    color: rgba(0, 0, 0, 0.6);
+    font-size: 16px;
+    font-weight: 500;
   }
 }
 
 .flights-table {
   width: 100%;
+  animation: slideInUp 0.5s ease-out;
   
   th {
-    font-weight: 600;
-    background-color: #f5f5f5;
+    font-weight: 700;
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    color: #333;
+    text-transform: uppercase;
+    font-size: 12px;
+    letter-spacing: 0.5px;
+    border-bottom: 2px solid #667eea;
   }
   
   td, th {
-    padding: 16px;
+    padding: 20px 16px;
+  }
+  
+  tr {
+    transition: all 0.3s ease;
+    
+    &:hover {
+      background-color: rgba(102, 126, 234, 0.05);
+      transform: scale(1.01);
+    }
   }
   
   mat-chip {
+    transition: all 0.3s ease;
+    font-weight: 600;
+    
+    &:hover {
+      transform: scale(1.05);
+    }
+    
     mat-icon {
       font-size: 16px;
       height: 16px;
@@ -96,6 +224,19 @@
   }
   
   button {
+    transition: all 0.3s ease;
+    font-weight: 600;
+    border-radius: 8px;
+    
+    &:hover:not(:disabled) {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+    }
+    
+    &:active:not(:disabled) {
+      transform: translateY(0);
+    }
+    
     mat-icon {
       margin-right: 4px;
     }
@@ -103,33 +244,58 @@
 }
 
 mat-paginator {
-  border-top: 1px solid rgba(0,0,0,0.12);
+  border-top: 2px solid #e9ecef;
+  background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+  border-radius: 0 0 16px 16px;
 }
 
 .autofix-panel {
   margin-top: 24px;
-  border: 2px solid #3f51b5;
+  border-radius: 16px;
+  overflow: hidden;
+  border: 3px solid transparent;
+  background: linear-gradient(white, white) padding-box,
+              linear-gradient(135deg, #667eea 0%, #764ba2 100%) border-box;
+  box-shadow: 0 8px 24px rgba(102, 126, 234, 0.3);
+  animation: slideInUp 0.5s ease-out;
   
   mat-card-header {
-    background-color: #f5f5f5;
-    padding: 16px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    padding: 20px;
     position: relative;
+    color: white;
     
     mat-card-title {
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 12px;
+      font-size: 20px;
+      font-weight: 700;
+      
+      mat-icon {
+        font-size: 28px;
+        width: 28px;
+        height: 28px;
+      }
     }
     
     .close-button {
       position: absolute;
       right: 8px;
       top: 8px;
+      color: white;
+      transition: all 0.3s ease;
+      
+      &:hover {
+        transform: scale(1.1) rotate(90deg);
+        background-color: rgba(255, 255, 255, 0.2);
+      }
     }
   }
   
   mat-card-content {
     padding: 24px;
+    background: white;
   }
 }
 
@@ -139,17 +305,42 @@ mat-paginator {
   align-items: center;
   justify-content: center;
   padding: 48px;
+  animation: fadeIn 0.5s ease-out;
+  
+  mat-spinner {
+    margin-bottom: 16px;
+  }
   
   p {
     margin-top: 16px;
     font-size: 16px;
-    color: rgba(0,0,0,0.6);
+    font-weight: 500;
+    color: rgba(0, 0, 0, 0.7);
+    animation: pulse 2s infinite;
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.6;
   }
 }
 
 .fix-result {
   mat-expansion-panel {
     margin-bottom: 16px;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    
+    &:hover {
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      transform: translateY(-2px);
+    }
     
     &:last-child {
       margin-bottom: 0;
@@ -159,6 +350,13 @@ mat-paginator {
       display: flex;
       align-items: center;
       gap: 8px;
+      font-weight: 600;
+      
+      mat-icon {
+        font-size: 20px;
+        width: 20px;
+        height: 20px;
+      }
     }
   }
 }
@@ -168,15 +366,24 @@ mat-paginator {
   
   p {
     margin: 12px 0;
+    line-height: 1.6;
     
     strong {
       display: inline-block;
       min-width: 150px;
+      font-weight: 700;
+      color: #333;
     }
   }
   
   a {
     margin-top: 8px;
+    transition: all 0.3s ease;
+    
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+    }
     
     mat-icon {
       margin-right: 4px;
@@ -185,45 +392,134 @@ mat-paginator {
 }
 
 .code-snippet {
-  background-color: #f5f5f5;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  padding: 16px;
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  border: 2px solid #dee2e6;
+  border-radius: 12px;
+  padding: 20px;
   margin: 16px 0;
   overflow-x: auto;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05);
   
   pre {
     margin: 0;
-    font-family: 'Courier New', monospace;
+    font-family: 'Fira Code', 'Courier New', monospace;
     font-size: 14px;
-    line-height: 1.5;
+    line-height: 1.6;
     
     code {
-      color: #333;
+      color: #2d3748;
     }
+  }
+}
+
+// Scroll to Top Button
+.scroll-to-top {
+  position: fixed;
+  bottom: 80px;
+  right: 20px;
+  z-index: 1000;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(20px);
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  
+  &.visible {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+  }
+  
+  &:hover {
+    transform: translateY(-4px) scale(1.05);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4);
+  }
+  
+  &:active {
+    transform: translateY(-2px) scale(1.02);
+  }
+  
+  mat-icon {
+    animation: bounce 2s infinite;
+  }
+}
+
+@keyframes bounce {
+  0%, 20%, 50%, 80%, 100% {
+    transform: translateY(0);
+  }
+  40% {
+    transform: translateY(-10px);
+  }
+  60% {
+    transform: translateY(-5px);
   }
 }
 
 // Snackbar styles
 ::ng-deep {
   .snackbar-success {
-    background-color: #4caf50 !important;
+    background: linear-gradient(135deg, #4caf50 0%, #45a049 100%) !important;
     color: white !important;
+    box-shadow: 0 4px 12px rgba(76, 175, 80, 0.4) !important;
   }
   
   .snackbar-error {
-    background-color: #f44336 !important;
+    background: linear-gradient(135deg, #f44336 0%, #e53935 100%) !important;
     color: white !important;
+    box-shadow: 0 4px 12px rgba(244, 67, 54, 0.4) !important;
   }
   
   .snackbar-warning {
-    background-color: #ff9800 !important;
+    background: linear-gradient(135deg, #ff9800 0%, #fb8c00 100%) !important;
     color: white !important;
+    box-shadow: 0 4px 12px rgba(255, 152, 0, 0.4) !important;
   }
   
   .snackbar-info {
-    background-color: #2196f3 !important;
+    background: linear-gradient(135deg, #2196f3 0%, #1976d2 100%) !important;
     color: white !important;
+    box-shadow: 0 4px 12px rgba(33, 150, 243, 0.4) !important;
+  }
+  
+  .mat-mdc-snack-bar-container {
+    border-radius: 12px !important;
+    overflow: hidden;
+  }
+}
+
+// Responsive Design
+@media (max-width: 768px) {
+  .container {
+    padding: 16px;
+  }
+  
+  .header-card {
+    mat-card-header {
+      flex-direction: column;
+      text-align: center;
+      
+      .header-icon-wrapper {
+        margin-bottom: 12px;
+      }
+    }
+  }
+  
+  .status-badges {
+    display: none;
+  }
+  
+  .flights-table {
+    font-size: 12px;
+    
+    td, th {
+      padding: 12px 8px;
+    }
+  }
+  
+  .scroll-to-top {
+    bottom: 20px;
+    right: 16px;
   }
 }
 

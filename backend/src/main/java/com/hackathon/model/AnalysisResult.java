@@ -11,6 +11,30 @@ public record AnalysisResult(
     String originalCodeSnippet,
     String logLine
 ) {
+    // Convenience methods for backward compatibility
+    public boolean isFixable() {
+        return fixable;
+    }
+    
+    public String getErrorType() {
+        return errorType;
+    }
+    
+    public String codeSnippet() {
+        return originalCodeSnippet;
+    }
+    
+    public String getCodeSnippet() {
+        return originalCodeSnippet;
+    }
+    
+    public String getMessage() {
+        return suggestedFix != null ? suggestedFix : "No fix available";
+    }
+    
+    public String getStackTrace() {
+        return logLine;
+    }
 }
 
 // Made with Bob

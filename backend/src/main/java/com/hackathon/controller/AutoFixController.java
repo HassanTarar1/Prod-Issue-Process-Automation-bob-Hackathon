@@ -32,6 +32,12 @@ public class AutoFixController {
 
     @Value("${slack.webhook.url:}")
     private String slackWebhookUrl;
+    
+    @Value("${github.repo.owner:demo}")
+    private String githubRepoOwner;
+    
+    @Value("${github.repo.name:flight-dashboard}")
+    private String githubRepoName;
 
     public AutoFixController(
             LogAnalyzerService logAnalyzerService,
@@ -60,7 +66,7 @@ public class AutoFixController {
         
         try {
             String logLine = request.get("logLine");
-            String repo = request.getOrDefault("repo", "hackathon-team/flight-dashboard");
+            String repo = request.getOrDefault("repo", githubRepoOwner + "/" + githubRepoName);
             String filePath = request.getOrDefault("filePath", "src/main/java/com/hackathon/service/FlightService.java");
 
             log.info("Starting auto-fix workflow for log line");
@@ -299,8 +305,8 @@ public class AutoFixController {
                     String fixSnippet = bobCodeGenerator.generateFix(result.errorType(), result.codeSnippet());
                     fixesGenerated++;
 
-                    // Create PR (using default repo and file path)
-                    String repo = "hackathon-team/flight-dashboard";
+                    // Create PR (using environment variables for repo and default file path)
+                    String repo = githubRepoOwner + "/" + githubRepoName;
                     String filePath = "src/main/java/com/hackathon/service/FlightService.java";
                     String originalCode = result.codeSnippet();
                     String fixedCode = originalCode + "\n" + fixSnippet;

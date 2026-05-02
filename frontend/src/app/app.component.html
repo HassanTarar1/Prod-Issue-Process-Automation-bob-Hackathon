@@ -1,32 +1,35 @@
+<!-- Bob Side Panel -->
+<app-bob-side-panel></app-bob-side-panel>
+
 <!-- Toolbar -->
-<mat-toolbar color="primary" class="app-toolbar">
+<mat-toolbar color="primary" class="app-toolbar" [@fadeInUp]>
   <mat-icon class="toolbar-icon">flight</mat-icon>
-  <span>{{ title }}</span>
+  <span class="toolbar-title">{{ title }}</span>
   <span class="spacer"></span>
   
   <!-- System Status Badges -->
   <div class="status-badges" *ngIf="systemStatus">
     <mat-chip-set>
-      <mat-chip [color]="getStatusColor(systemStatus.githubConfigured)">
+      <mat-chip [color]="getStatusColor(systemStatus.githubConfigured)" class="status-chip">
         <mat-icon>{{getStatusIcon(systemStatus.githubConfigured)}}</mat-icon>
         GitHub
       </mat-chip>
-      <mat-chip [color]="getStatusColor(systemStatus.slackConfigured)">
+      <mat-chip [color]="getStatusColor(systemStatus.slackConfigured)" class="status-chip">
         <mat-icon>{{getStatusIcon(systemStatus.slackConfigured)}}</mat-icon>
         Slack
       </mat-chip>
-      <mat-chip [color]="getStatusColor(systemStatus.playwrightInstalled)">
+      <mat-chip [color]="getStatusColor(systemStatus.playwrightInstalled)" class="status-chip">
         <mat-icon>{{getStatusIcon(systemStatus.playwrightInstalled)}}</mat-icon>
         Playwright
       </mat-chip>
-      <mat-chip color="accent">
+      <mat-chip color="accent" class="status-chip">
         <mat-icon>build</mat-icon>
         Fixes: {{systemStatus.totalFixesGenerated}}
       </mat-chip>
     </mat-chip-set>
   </div>
   
-  <button mat-icon-button (click)="recordTest()" matTooltip="Record Playwright Test">
+  <button mat-icon-button (click)="recordTest()" matTooltip="Record Playwright Test" class="toolbar-action">
     <mat-icon>videocam</mat-icon>
   </button>
 </mat-toolbar>
@@ -34,13 +37,15 @@
 <!-- Main Content -->
 <div class="container">
   <!-- Header Card -->
-  <mat-card class="header-card">
+  <mat-card class="header-card" [@fadeInUp]>
     <mat-card-header>
-      <mat-card-title>
-        <mat-icon>dashboard</mat-icon>
-        Flight Dashboard
-      </mat-card-title>
-      <mat-card-subtitle>Real-time flight monitoring with IBM Bob auto-fix capabilities</mat-card-subtitle>
+      <div class="header-icon-wrapper">
+        <mat-icon class="header-icon">dashboard</mat-icon>
+      </div>
+      <div class="header-content">
+        <mat-card-title>Flight Dashboard</mat-card-title>
+        <mat-card-subtitle>Real-time flight monitoring with IBM Bob auto-fix capabilities</mat-card-subtitle>
+      </div>
     </mat-card-header>
   </mat-card>
 
@@ -234,3 +239,17 @@
     </mat-card-content>
   </mat-card>
 </div>
+
+<!-- Scroll to Top Button -->
+<button
+  mat-fab
+  color="accent"
+  class="scroll-to-top"
+  [class.visible]="showScrollTop"
+  (click)="scrollToTop()"
+  matTooltip="Scroll to top"
+  matTooltipPosition="left">
+  <mat-icon>keyboard_arrow_up</mat-icon>
+</button>
+
+<!-- Made with Bob -->

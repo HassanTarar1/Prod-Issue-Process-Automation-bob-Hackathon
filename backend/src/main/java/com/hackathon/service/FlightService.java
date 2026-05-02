@@ -68,6 +68,15 @@ public class FlightService {
     }
     
     /**
+     * Get airline name in uppercase
+     * INTENTIONAL BUG: Throws NullPointerException when airline is null
+     */
+    public String getAirlineUpperCase(Flight flight) {
+        // Intentional bug: No null check before calling toUpperCase()
+        return flight.getAirline().toUpperCase();
+    }
+    
+    /**
      * Calculate percentage of delayed flights
      * INTENTIONAL BUG: Throws ArithmeticException if total flights == 0
      */
