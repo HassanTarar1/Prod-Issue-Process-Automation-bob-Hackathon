@@ -1,7 +1,7 @@
 # IBM Bob Hackathon - Production Issue Auto-Fix Demonstration
 
 ![IBM Bob](https://img.shields.io/badge/IBM-Bob-blue)
-![Java](https://img.shields.io/badge/Java-25-orange)
+![Java](https://img.shields.io/badge/Java-21-orange)
 ![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.4.0-green)
 ![Angular](https://img.shields.io/badge/Angular-17-red)
 ![Playwright](https://img.shields.io/badge/Playwright-E2E-purple)
@@ -46,7 +46,7 @@ This project demonstrates IBM Bob's capability to automatically detect productio
 
 ### Prerequisites
 
-- **Java 25** (or Java 21+)
+- **Java 21** (or Java 21+)
 - **Node.js 18+** and npm
 - **Gradle 8.x**
 - **Angular CLI 17**
@@ -310,7 +310,7 @@ Edit `frontend/src/app/services/*.service.ts` and update the `apiUrl`.
 - **Solution**: Bob automatically detects, fixes, and deploys solutions
 
 ### 2. Technical Implementation
-- Java 25 with Spring Boot 3.4.0
+- Java 21 with Spring Boot 3.4.0
 - Angular 17 with Material UI
 - Playwright for E2E testing
 - GitHub API integration
