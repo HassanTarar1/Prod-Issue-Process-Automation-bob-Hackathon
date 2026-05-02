@@ -13,7 +13,7 @@ import java.util.Base64;
 @Slf4j
 public class GitHubService {
 
-    //@Value("${github.token:}")
+   // @Value("${github.token:}")
     private String githubToken="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";
 
     private static final String GITHUB_API_BASE = "https://api.github.com";

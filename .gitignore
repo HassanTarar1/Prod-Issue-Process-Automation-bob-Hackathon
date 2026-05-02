@@ -86,19 +86,6 @@ Thumbs.db
 *.sqlite
 *.db
 
-# Bob sessions (keep structure, ignore large files)
-bob_sessions/*.mp4
-bob_sessions/*.mov
-bob_sessions/*.avi
-bob_sessions/*.png
-bob_sessions/*.jpg
-bob_sessions/*.jpeg
-bob_sessions/*.gif
-
-# Keep markdown files in bob_sessions
-!bob_sessions/*.md
-!bob_sessions/README.md
-
 # SpotBugs reports
 backend/build/reports/spotbugs/
 

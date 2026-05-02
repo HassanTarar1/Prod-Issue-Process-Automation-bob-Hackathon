@@ -17,7 +17,7 @@ import java.time.format.DateTimeFormatter;
 public class SlackNotifier {
 
     //@Value("${slack.webhook.url:}")
-    private String slackWebhookUrl="https://hooks.slack.com/services/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";
+    private String slackWebhookUrl="https://hooks.slack.com/services/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";
 
     private static final MediaType JSON = MediaType.get("application/json; charset=utf-8");
     private final OkHttpClient client = new OkHttpClient();
